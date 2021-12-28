@@ -11,7 +11,7 @@ import numpy as np
 class BeerGame(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, n_agents: int, env_type: str, n_turns_per_game=30, seed=None):
+    def __init__(self, n_agents: int, env_type: str, BS_level=[95,90,95,74], n_turns_per_game=30, seed=None):
         super().__init__()
         self.n_agents = n_agents
         self.orders = [] # 주문하는 양
