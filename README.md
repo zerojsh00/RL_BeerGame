@@ -24,4 +24,4 @@ pip install -e .
 ```
 
 ## 참고문헌 
-본 연구는 Afshin Oroojlooyjadid의 연구(https://arxiv.org/abs/1708.05924)의 후속연구입니다.
+본 연구는 Afshin Oroojlooyjadid의 연구(https://arxiv.org/abs/1708.05924) 의 후속연구입니다.
