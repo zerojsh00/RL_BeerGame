@@ -11,12 +11,11 @@ source activate beer-game-env
 
 2. Clone the environment repository
 ```
-git clone https://github.com/orlov-ai/beer-game-env
+git clone git clone https://github.com/zerojsh00/RL_BeerGame
 ```
 
 3. Point to root repository and install the package
 ```
-cd beer-game-env
 pip install -e .
 ```
 
@@ -28,6 +27,3 @@ env = gym.make('BeerGame-v0', n_agents=4, env_type='classical')
 ```
 
 tested with gym version `gym==0.14.0`
-
-Need a feature? Have a problem? Just start an issue.
-PRs are always welcome.
