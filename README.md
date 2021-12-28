@@ -11,7 +11,7 @@ source activate beer-game-env
 
 2. Clone the environment repository
 ```
-git clone git clone https://github.com/zerojsh00/RL_BeerGame
+git clone https://github.com/zerojsh00/RL_BeerGame
 ```
 
 3. Point to root repository and install the package
