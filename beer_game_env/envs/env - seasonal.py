@@ -5,12 +5,12 @@ import itertools
 from collections import deque
 import numpy as np
 
-# 본 환경은 선행 연구를 되도록 완벽히 재연하고자 한다.
+
 
 class BeerGame(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, n_agents: int, env_type: str, BS_level: [47,47,46,42], n_turns_per_game=30):
+    def __init__(self, n_agents: int, env_type: str, BS_level: [95,90,95,74], n_turns_per_game=30):
         super().__init__()
         self.env_type = env_type
         # print("demand type >>> ", self.env_type)
@@ -18,17 +18,18 @@ class BeerGame(gym.Env):
         self.n_agents = n_agents
         self.orders = [] # 주문하는 양
         self.shipments = [] # 배송하는 양
-        self.stocks = [10] * self.n_agents # 현 재고
+        self.stocks = [50] * self.n_agents # 현 재고
         self.holding_cost = np.zeros(self.n_agents, dtype=np.float)
         self.stockout_cost = np.zeros(self.n_agents, dtype=np.float)
-       self.score_weight = [[0.5] * self.n_agents, [2] * self.n_agents]
-        # self.score_weight = [[0.5] * self.n_agents, [10, 0.1, 0.1, 0.1]] # Stock Out Cost가 Retailer에서만 발생하는 경우
+        # self.score_weight = [[0.5] * self.n_agents, [2] * self.n_agents]
+        self.score_weight = [[0.5] * self.n_agents, [10, 0.1, 0.1, 0.1]] # Stock Out Cost가 Retailer에서만 발생하는 경우
+
         self.BS_level = BS_level
         self.turns = None
         self.turn = 0
         self.done = False
 
-        # np.random.seed(0)
+        np.random.seed(0)
 
         if self.env_type == 'seasonal_beer' :
             ratio = [1, 1.04, 1.34, 1.4, 1.76, 1.9, 1.61, 1.95, 1.94, 1.73, 1.62, 1.74, 1]
@@ -47,8 +48,8 @@ class BeerGame(gym.Env):
 
         self.trans_hist = deque() # transition history를 기록하여 state vector를 만듦
         self.env_type = env_type
-        if self.env_type not in ['normal', 'poisson', 'sinusoidal', 'seasonal_beer']:
-            raise NotImplementedError("env_type must be in ['normal', 'poisson', 'sinusoidal', 'seasonal_beer']")
+        if self.env_type not in ['poisson', 'sinusoidal', 'seasonal_beer']:
+            raise NotImplementedError("env_type must be in ['poisson', 'sinusoidal', 'seasonal_beer']")
 
         self.n_turns = n_turns_per_game
 
@@ -109,20 +110,20 @@ class BeerGame(gym.Env):
 
     def reset(self):
         self.done = False
-        self.stocks = [10] * self.n_agents # 현 재고
+        self.stocks = [18] * self.n_agents # 현 재고
 
         # 모든 agent의 outbound orders를 초기화 함
         # retailer(0), wholesaler(1), distributor(2)는 upstream으로 [t-2, t-1] 시점에 주문하였으며, 각 10으로 초기화 함
         # manufacturer(3)는 t-1 시점에만 주문 내역이 있으며 10으로 함
         # t시점 주문량(action)은 추후 deque에 append 됨
-        temp_orders_out = [[10, 10]] * (self.n_agents - 1) + [[10]]
+        temp_orders_out = [[18, 18]] * (self.n_agents - 1) + [[18]]
         self.orders_out = [deque(x) for x in temp_orders_out]
 
         # 모든 agent outbound shipments를 초기화 함
         # retailer는 outbound shipments에 대한 리드타임이 존재하지 않음, 주문오는 족족 재고에서 처리됨
         # wholesaler(1), distributor(2), manufacturer(3), 그리고 게임의 외부참여자인 supplier의 [t-2, t-1]시점 배송량을 각 10으로 초기화 함
         # [주의] shipments_out의 경우, 여느 때와 달리 index 0은 wholesaler이며, index 3은 supplier임 !
-        temp_shipments_out = [[10, 10]] * self.n_agents
+        temp_shipments_out = [[18, 18]] * self.n_agents
         self.shipments_out = [deque(x) for x in temp_shipments_out]
 
 
@@ -145,6 +146,7 @@ class BeerGame(gym.Env):
             self.trans_hist.append(self._get_observations())
 
         return self.trans_hist
+
 
 
     def render(self, episode, path, mode='human'):
@@ -196,7 +198,7 @@ class BeerGame(gym.Env):
         # 1) t시점에 각 agent는 downstream으로부터 주문(inbound order)을 받음
         # retailer는 inbound order에 대한 리드타임이 존재하지 않음, 단, 현장에서 확률적 수요가 발생함
         if reset == True :
-            retailer_demand = 10
+            retailer_demand = 18
         else :
             retailer_demand = self._get_demand()
         # wholesaler ~ manufacturer는 t시점에 downstream이 t-2 시점에 주문했던 사항을 주문 받음
@@ -229,6 +231,7 @@ class BeerGame(gym.Env):
         self.shipments_out[-1].append(supplier_demand)
 
 
+
         # 4) t시점에 각 agent는 upstream에게 주문(outbound order)을 함
         # 주문량은 d+x rule을 적용하여 주문함
         # ★ 에이전트에 따라 바뀜
@@ -241,7 +244,7 @@ class BeerGame(gym.Env):
         # # All BS-Policy의 경우
         # for i in range(self.n_agents) :
         #     self.orders_out[i].append(action[i])
-        #
+
         # # Retailer만 DQN-agent인 경우
         # for i in range(self.n_agents) :
         #     self.orders_out[i].append(action[i])
@@ -261,6 +264,7 @@ class BeerGame(gym.Env):
         # for i in range(self.n_agents) :
         #     self.orders_out[i].append(action[i])
         # self.orders_out[3][-1] += self.orders_in[3] # distributor만 신경망의 아웃풋에 수요량만큼을 더해줌
+
 
     def step(self, action: list):
         self.trans_hist.popleft()

@@ -1,4 +1,3 @@
-LICENSE
 README.md
 setup.py
 beer_game_env.egg-info/PKG-INFO
