@@ -38,7 +38,7 @@ nbconvert @ file:///tmp/build/80754af9/nbconvert_1601914804165/work
 nbformat @ file:///tmp/build/80754af9/nbformat_1617383369282/work
 nest-asyncio @ file:///tmp/build/80754af9/nest-asyncio_1613680548246/work
 notebook @ file:///tmp/build/80754af9/notebook_1629197205351/work
-numpy==1.19.5
+numpy==1.22.0
 olefile==0.46
 packaging @ file:///tmp/build/80754af9/packaging_1637314298585/work
 pandas==1.1.5
