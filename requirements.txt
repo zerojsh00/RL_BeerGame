@@ -29,7 +29,7 @@ jupyterlab-widgets @ file:///tmp/build/80754af9/jupyterlab_widgets_1609884341231
 kiwisolver @ file:///tmp/build/80754af9/kiwisolver_1612282412546/work
 MarkupSafe @ file:///tmp/build/80754af9/markupsafe_1621528150516/work
 matplotlib @ file:///tmp/build/80754af9/matplotlib-suite_1613407855456/work
-mistune==0.8.4
+mistune==2.0.3
 mkl-fft==1.3.0
 mkl-random==1.1.1
 mkl-service==2.3.0
