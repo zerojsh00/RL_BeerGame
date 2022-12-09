@@ -4,7 +4,7 @@ attrs @ file:///tmp/build/80754af9/attrs_1620827162558/work
 backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
 -e git+https://github.com/zerojsh00/RL_BeerGame@b67527eeda2e0f82368f53d1bc2494d714442328#egg=beer_game_env
 bleach @ file:///tmp/build/80754af9/bleach_1628110601003/work
-certifi==2021.5.30
+certifi==2022.12.7
 cffi @ file:///tmp/build/80754af9/cffi_1625814693874/work
 cloudpickle==2.0.0
 cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
